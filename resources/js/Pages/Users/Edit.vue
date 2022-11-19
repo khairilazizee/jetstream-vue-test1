@@ -15,6 +15,7 @@ const props = defineProps({
     user: Object
 })
 
+
 const form = useForm({
     _method: "PUT",
     name: props.user.name,
@@ -22,14 +23,8 @@ const form = useForm({
 })
 
 const updateProfileInformation = () => {
-    if (photoInput.value) {
-        form.photo = photoInput.value.files[0];
-    }
-
-    form.post(route('user-profile-information.update'), {
-        errorBag: 'updateProfileInformation',
-        preserveScroll: true,
-        onSuccess: () => clearPhotoFileInput(),
+    form.value.post(route('users.update', props.user.id), {
+        preserveScroll: true
     });
 };
 
