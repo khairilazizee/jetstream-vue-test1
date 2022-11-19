@@ -17,7 +17,7 @@ defineProps({
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="text-right mb-4">
+                <div class="text-right mb-4" v-if="$page.props.permission.users.create">
                     <a :href="route('users.create')">
                         <PrimaryButton>Create User</PrimaryButton>
                     </a>
@@ -40,7 +40,7 @@ defineProps({
                                 <td class="text-center">Active</td>
                                 <td class="text-center">{{ user.role }}</td>
                                 <td class="text-center">
-                                    <a :href="route('users.edit', user.id)"
+                                    <a :href="route('users.edit', user.id)" v-if="user.can.update"
                                         class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                 </td>
                             </tr>

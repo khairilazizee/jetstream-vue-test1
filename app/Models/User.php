@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasCan;
+use Laravel\Sanctum\HasApiTokens;
+use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -17,6 +18,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use HasCan;
 
     /**
      * The attributes that are mass assignable.
@@ -57,10 +59,16 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'can',
     ];
 
     public function getCreatedAtAttributes($value)
     {
         return now()->parse($value)->format('d/m/Y');
+    }
+
+    public function checkRole($user)
+    {
+        return $this->role === $user;
     }
 }
